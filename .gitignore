@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+
+# Spark / Ivy / checkpoint
+checkpoint/
+checkpoints/
+/tmp/
+.ivy2/
+spark-warehouse/
+metastore_db/
+derby.log
+
+# Log & IDE
+*.log
+.idea/
+.vscode/
