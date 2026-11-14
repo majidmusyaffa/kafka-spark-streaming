@@ -87,29 +87,30 @@ def main():
     producer = KafkaProducer(bootstrap_servers=BOOTSTRAP)
     last_valid = None
     try:
-        for count in range(1, TOTAL_EVENTS + 1):
-            kind = SCHEDULE.get(count, "valid")
+        while True:
+            for count in range(1, TOTAL_EVENTS + 1):
+                kind = SCHEDULE.get(count, "valid")
 
-            if kind == "valid":
-                event = make_valid_event()
-                last_valid = event
-                label = "VALID"
-            elif kind.startswith("invalid:"):
-                _, error_kind = kind.split(":")
-                event = make_invalid_event(error_kind)
-                label = f"INVALID: {error_kind}"
-            elif kind == "late":
-                event = make_late_event()
-                label = "LATE"
-            elif kind == "duplicate":
-                event = last_valid
-                label = "DUPLICATE"
-            else:
-                raise ValueError(f"unknown schedule kind: {kind}")
+                if kind == "valid":
+                    event = make_valid_event()
+                    last_valid = event
+                    label = "VALID"
+                elif kind.startswith("invalid:"):
+                    _, error_kind = kind.split(":")
+                    event = make_invalid_event(error_kind)
+                    label = f"INVALID: {error_kind}"
+                elif kind == "late":
+                    event = make_late_event()
+                    label = "LATE"
+                elif kind == "duplicate":
+                    event = last_valid
+                    label = "DUPLICATE"
+                else:
+                    raise ValueError(f"unknown schedule kind: {kind}")
 
-            producer.send(TOPIC, json.dumps(event).encode("utf-8"))
-            print(f"[{label}] #{count} {event}")
-            time.sleep(random.uniform(MIN_INTERVAL, MAX_INTERVAL))
+                producer.send(TOPIC, json.dumps(event).encode("utf-8"))
+                print(f"[{label}] #{count} {event}")
+                time.sleep(random.uniform(MIN_INTERVAL, MAX_INTERVAL))
     except KeyboardInterrupt:
         print("stopped by user")
     finally:
