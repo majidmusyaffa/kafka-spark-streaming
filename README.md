@@ -105,3 +105,13 @@ window:
 - **Output**: ditampilkan ke console berisi `timestamp` (waktu Spark
   melakukan output) dan `running_total` (total kumulatif transaksi valid).
 
+## Dokumentasi
+
+Output dari producer.py:
+![hasil producer](screenshots/hasil_producer.png)
+
+Monitoring di akhq:
+![Monitoring di akhq](screenshots/monitoring_di_akhq.png)
+
+Output dari spark_streaming_job.py:
+![Output dari spark_streaming_job.py](screenshots/view_di_spark_streaming_job.png)
